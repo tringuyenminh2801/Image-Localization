@@ -1,4 +1,4 @@
-# Image-Localization
+# Image Localization
 
 Experimenting Image Localization using Genetic Algorithm
 To run, specify the image filename in either `one_scale.py` or `two_scale.py` and then run either of the file
