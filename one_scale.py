@@ -11,7 +11,7 @@ def population_init(size_of_population, shape = np.shape(template)):
     #create first resident
     population = np.array([[random.uniform(2, 100)]], dtype = float)
     #must use loop to create random residents
-    for i in range(size_of_population - 1):
+    for _ in range(size_of_population - 1):
         scale_percent = random.uniform(2, 100)
         population = np.append(population, np.array([[scale_percent]]), axis=0)
     return population
@@ -21,7 +21,7 @@ def compute_fitness(individual, template = cv.imread("skku_0.png", 0), img = cv.
     #dim: height x width 
     dim = (int(m.ceil(template.shape[1] * individual[:] / 100)), int(m.ceil(template.shape[0] * individual[:] / 100)))
     similarity_map = cv.matchTemplate(img, cv.resize(template, dim, interpolation=cv.INTER_AREA) , cv.TM_CCOEFF_NORMED)
-    minVal, maxVal, minLoc, maxLoc = cv.minMaxLoc(similarity_map)
+    _, maxVal, _, maxLoc = cv.minMaxLoc(similarity_map)
     return maxLoc, maxVal
 
 def binary_selection(population, population_size):
@@ -60,6 +60,7 @@ def create_new_population(population, size_of_population, chromosome_length = 1,
     best_scale = selected_population[-1,0]
     best_location = (selected_population[-1, 1], selected_population[-1, 2])
     best_score = selected_population[-1, -1]
+    
     #crossover for new population
     new_population = selected_population[:,0]
     new_population = np.resize(new_population, (size_of_population, 1))
@@ -74,21 +75,26 @@ def main():
 
     #New part
     img = cv.equalizeHist(img)
-
     img1 = cv.imread("skku_1.png", 1)
     template1 = cv.imread("skku_0.png", 1)
+
     #Show original image
     img_show = np.squeeze(img1)
     cv.imshow("Original image", img_show)
-    cv.waitKey()
+    k1 = cv.waitKey()
+    if k1 == ord('q'):
+        cv.destroyWindow(winname="Original image")
+
     #Show template image
     template_show = np.squeeze(template1)
     cv.imshow("Template", template_show)
-    cv.waitKey()
+    k2 = cv.waitKey()
+    if (k2 == ord('q')):
+        cv.destroyWindow(winname="Template")
 
     size_of_population = 50
-    chromosome_length = 1
     num_of_generations = 100
+
     #plotting loss function
     losses = []
     generations_x = [i+1 for i in range(num_of_generations)]
@@ -96,14 +102,16 @@ def main():
     for i in range(num_of_generations):
         (best_scale, best_location, best_score, population) = create_new_population(population, size_of_population)
         losses.append(best_score)
-        print("."*(i+1))
+        print("."*(i + 1))
     plt.plot(generations_x, losses)
     plt.ylabel("Similar values")
     plt.xlabel("Generations")
     plt.title("Genetic Algorithm similarity function")
     plt.show()
+
     print("Precision: ", best_score)
     print("Best scale: ", best_scale)
+
     #best location: x, y
     print("Best location: ", best_location)
     start_point = (int(m.ceil(best_location[0])), int(m.ceil(best_location[1])))
@@ -113,7 +121,10 @@ def main():
     color = (255, 0, 0)
     image = cv.rectangle(img1, start_point, end_point, color, thickness=2)
     cv.imshow("Result", image)
-    cv.waitKey()
+    k3 = cv.waitKey()
+
+    if k3 == ord('q'):
+        cv.destroyAllWindows()
 
 if __name__ == "__main__":
     main()

@@ -1,4 +1,5 @@
 
+from cv2 import destroyAllWindows, destroyWindow
 import numpy as np
 import matplotlib.pyplot as plt
 import random
@@ -87,40 +88,60 @@ def main():
     #template & image format : numpy.ndarray
     template = cv.imread("skku_0.png", 0)
     img = cv.imread("skku_1.png", 0)
+
+    #New part
+    img = cv.equalizeHist(img)
+    img1 = cv.imread("skku_1.png", 1)
+    template1 = cv.imread("skku_0.png", 1)
+
     #Show original image
-    img_show = np.squeeze(img)
+    img_show = np.squeeze(img1)
     cv.imshow("Original image", img_show)
-    cv.waitKey()
+    k1 = cv.waitKey()
+    if k1 == ord('q'):
+        cv.destroyWindow(winname="Original image")
+
     #Show template image
-    template_show = np.squeeze(template)
+    template_show = np.squeeze(template1)
     cv.imshow("Template", template_show)
-    cv.waitKey()
+    k2 = cv.waitKey()
+    if (k2 == ord('q')):
+        cv.destroyWindow(winname="Template")
 
     size_of_population = 150
     chromosome_length = 2
-    num_of_generations = 25
+    num_of_generations = 100
     #plotting loss function
     losses = []
     generations_x = [i+1 for i in range(num_of_generations)]
     population = population_init(size_of_population)
+
     for i in range(num_of_generations):
         (best_scale, best_location, best_score, population) = create_new_population(population, i+1, size_of_population)
         losses.append(best_score)
+        print(f"{i+1} generation")
+
     plt.plot(generations_x, losses)
     plt.ylabel("Similar values")
     plt.xlabel("Generations")
     plt.title("Genetic Algorithm similarity function")
     plt.show()
+
     print("Precision: ", best_score)
     print("Best scale: ", best_scale)
+
     start_point = (int(m.ceil(best_location[1])), int(m.ceil(best_location[0])))
     x_end = int(m.ceil(best_location[0]+(img.shape[1]*best_scale[0])/100))
     y_end = int(m.ceil(best_location[1]+(img.shape[0]*best_scale[1])/100))
     end_point = (x_end, y_end)
-    color = (0, 0, 0)
-    image = cv.rectangle(img, start_point, end_point, color, thickness=1)
+
+    color = (255, 0, 0)
+    image = cv.rectangle(img1, start_point, end_point, color, thickness=2)
+
     cv.imshow("Result", image)
-    cv.waitKey()
+    k = cv.waitKey()
+    if k == ord('q'):
+        cv.destroyAllWindows()
 
 if __name__ == "__main__":
     main()
