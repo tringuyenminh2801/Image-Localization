@@ -23,7 +23,7 @@ Image captured by short focal len
 \
 Image captured by long focal len
 ![alt](/assets/template.png)
-\
+
 
 ## One scale
 ![alt](/assets/one_result.png)
