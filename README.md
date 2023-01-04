@@ -32,8 +32,7 @@ Cosine Similarity value
 ![alt](/assets/one_sim.png)
 
 ## Two scale
-Result using [two_scale.py](/two_scale.py)
-![alt](/assets/two_result.png)
+![alt](/assets/two_sim.png)
 \
 Cosine Similarity value
-![alt](/assets/two_sim.png)
+![alt](/assets/two_result.png)
