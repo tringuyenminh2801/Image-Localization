@@ -108,7 +108,7 @@ def main():
     if (k2 == ord('q')):
         cv.destroyWindow(winname="Template")
 
-    size_of_population = 150
+    size_of_population = 30
     chromosome_length = 2
     num_of_generations = 100
     #plotting loss function
