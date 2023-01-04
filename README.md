@@ -17,18 +17,21 @@ Press `q` again, then the algorithm will run (the one scale will be much faster,
 Press `q` again to see the original image with the bounding box.
 
 # Final Result
+## Input image and template
 Image captured by short focal len
 ![alt](/assets/original.png)
 \
 Image captured by long focal len
 ![alt](/assets/template.png)
 \
-Result using [one_scale.py](/one_scale.py)
+
+## One scale
 ![alt](/assets/one_result.png)
 \
 Cosine Similarity value
 ![alt](/assets/one_sim.png)
-\
+
+## Two scale
 Result using [two_scale.py](/two_scale.py)
 ![alt](/assets/two_result.png)
 \
